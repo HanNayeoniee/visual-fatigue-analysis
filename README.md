@@ -3,14 +3,15 @@
 
 ---
 ## ◼ 프로젝트 설명
-본 프로젝트는 동공의 움직임을 기반으로 동공의 피로도를 정량적으로 측정한다.
+본 프로젝트는 동공의 움직임을 기반으로 동공 피로도를 정량적으로 측정한다.
+눈 깜빡임 빈도, 눈 감은 시간, 동공 변화 속도 3가지를 피로도 측정 지표로 사용했다.
+
 
 
 ---
 ## ◼ 논문
 ICICT 2021
 [Visual fatigue analysis of welding mask wearer based on blink analysis](https://drive.google.com/file/d/1VjO1nBAddad340xkDOA79pc2VNdl815T/view?usp=sharing)
-
 
 
 ---
