@@ -1,30 +1,28 @@
 # visual-fatigue-analysis
-> 본 프로젝트는 동공의 움직임을 기반으로 시각 피로도를 정량적으로 측정합니다. 
-눈 깜빡임 빈도, 눈 감은 시간, 동공 변화 속도 3가지를 피로도 측정 지표로 사용했습니다.
+> 본 프로젝트는 눈 깜빡임 빈도, 눈 감은 시간, 동공 변화 속도 3가지 동공 움직임을 기반으로 시각 피로를 정량적으로 측정합니다.
 
 
 ## Description
 
-ICICT 2021 [Visual fatigue analysis of welding mask wearer based on blink analysis](https://drive.google.com/file/d/1VjO1nBAddad340xkDOA79pc2VNdl815T/view?usp=sharing)
+논문 보러가기 (☞ﾟヮﾟ)☞ ICICT 2021 [Visual fatigue analysis of welding mask wearer based on blink analysis](https://drive.google.com/file/d/1VjO1nBAddad340xkDOA79pc2VNdl815T/view?usp=sharing)
 
 ## Environment
 Windows 10
 
-## Prerequisite
-python 3.8.5
-numpy 1.19.2
-matplotlib 3.2.2
-scipy 1.5.3
-pandas 1.2.0
-
-
+## Installation
 ```python
+(anaconda prompt)
+conda create -n my_env python=3.8.5
+conda activate my_env
+pip install jupyter notebook
+pip install ipykernel
+python -m ipykernel install --user --name my_env --display-name "my_env"
+
 (git bash)
 git clone https://github.com/HanNayeoniee/visual-fatigue-analysis.git
-pip install numpy
-pip install matplotlib
-pip install scipy
-pip install pandas
+
+(anaconda prompt)
+pip install -r requirements.txt
 ```
 
 
