@@ -5,7 +5,7 @@
 
 ## Description
 
-ICICT 2021[Visual fatigue analysis of welding mask wearer based on blink analysis](https://drive.google.com/file/d/1VjO1nBAddad340xkDOA79pc2VNdl815T/view?usp=sharing)
+ICICT 2021 [Visual fatigue analysis of welding mask wearer based on blink analysis](https://drive.google.com/file/d/1VjO1nBAddad340xkDOA79pc2VNdl815T/view?usp=sharing)
 
 ## Environment
 Windows 10
