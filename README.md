@@ -5,6 +5,8 @@
 
 ## Description
 
+ICICT 2021[Visual fatigue analysis of welding mask wearer based on blink analysis](https://drive.google.com/file/d/1VjO1nBAddad340xkDOA79pc2VNdl815T/view?usp=sharing)에 소개되었습니다.
+
 ## Environment
 Windows 10
 
@@ -30,33 +32,35 @@ pip install pandas
 1. csv_preprocess.py : csv파일 보간
 
 ```interpolation_zero()``` : 앞/뒤 프레임 사이에 동공크기가 0인 프레임이 하나일때 앞/뒤 프레임의 평균으로 대체
+
 ```interpolation_nonzero()``` : 앞/뒤 프레임 값이 모두 0일때 가운데 프레임 값을 0으로 대체
+
 ```thres_zero()``` : 동공 크기가 평균의 1/3이하인 값은 모두 0으로 대체
 
 2. blink.py : 눈 깜빡임 빈도, 눈 감은 시간 계산
 
 ```count_blink()``` : 눈 깜빡임 빈도, 눈 감은 시간 계산
+
 ```draw_graph()``` : 그래프 그리기
+
 ```draw_trendline_blink()``` : 2차식 추세선과 함께 그래프 그리기
 
 3. fft.py : 동공 변화 속도 계산 
 
 ```del_high_freq()``` : 고주파 필터링
+
 ```del_high_and_low_freq()``` : 고주파, 저주파 필터링
+
 ```fft()``` : 동공 변화 속도 계산
+
 ```draw_fft_graph()``` : 그래프 그리기
+
 ```draw_trendline_fft()``` : 2차식 추세선과 함께 그래프 그리기
 
 4. main.py :
 전처리 -> 눈 깜빡임 빈도, 눈 감은 시간 계산 -> 동공크기 변화율 계산 ->엑셀 파일, 결과 그래프 저장
 
 ## Usage
-
-
-
-## Paper
-ICICT 2021
-[Visual fatigue analysis of welding mask wearer based on blink analysis](https://drive.google.com/file/d/1VjO1nBAddad340xkDOA79pc2VNdl815T/view?usp=sharing)
 
 
 
