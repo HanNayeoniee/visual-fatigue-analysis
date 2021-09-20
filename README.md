@@ -27,6 +27,15 @@ pip install -r requirements.txt
 
 
 ## Files
+**pupil_detection**
+1. get_pupil_size.py : 사용자 설정 변수에 따라 동공 크기 검출
+
+2. get_pupil_size.ui : pyqt ui파일
+
+3. utils.py : 
+
+
+**analysis**
 1. csv_preprocess.py : csv파일 보간
 
 ```interpolation_zero()``` : 앞/뒤 프레임 사이에 동공크기가 0인 프레임이 하나일때 앞/뒤 프레임의 평균으로 대체
