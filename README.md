@@ -4,7 +4,7 @@
 
 ## Description
 
-논문 보러가기 (☞ﾟヮﾟ)☞ ICICT 2021 [Visual fatigue analysis of welding mask wearer based on blink analysis](https://drive.google.com/file/d/1VjO1nBAddad340xkDOA79pc2VNdl815T/view?usp=sharing)
+논문 보러가기 (☞ﾟヮﾟ)☞  ICICT 2021 [Visual fatigue analysis of welding mask wearer based on blink analysis](https://drive.google.com/file/d/1VjO1nBAddad340xkDOA79pc2VNdl815T/view?usp=sharing)
 
 ## Environment
 Windows 10
@@ -59,7 +59,7 @@ pip install -r requirements.txt
 전처리 -> 눈 깜빡임 빈도, 눈 감은 시간 계산 -> 동공크기 변화율 계산 ->엑셀 파일, 결과 그래프 저장
 
 ## Usage
-
+[demo.ipynb]()
 
 
 ## Authors
