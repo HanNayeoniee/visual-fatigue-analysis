@@ -29,12 +29,12 @@ def main(path, norm, save_pre = False):
     else:
         chunk = 30 // minute
 
-    file_list = os.listdir(path)
-    file_list_csv = [file for file in file_list if file.endswith(".csv")]
-
     avg_blink = []
     avg_frame = []
     avg_size = []
+
+    file_list = os.listdir(path)
+    file_list_csv = [file for file in file_list if file.endswith(".csv")]
 
     for i, file in enumerate(file_list_csv):
         name = file.split(".")[0]  # 파일명
@@ -43,7 +43,7 @@ def main(path, norm, save_pre = False):
         pupil_list = csv_file['pupil_size_diameter'].tolist()  # 동공 크기 데이터만 가져오기
 
 
-        # 0) csv파일 전처리
+        # 1) csv파일 전처리
         interpol_zero = interpolation_zero(pupil_list)
         interpol_nonzero = interpolation_nonzero(interpol_zero)
         thresh_list = thres_zero(interpol_nonzero)
@@ -61,13 +61,10 @@ def main(path, norm, save_pre = False):
         # 전처리한 csv파일로 업데이트
         pupil_list = thresh_list
 
-        # 1) 눈 감은시간, 눈 깜빡임 횟수 분석
+        # 2) 눈 감은시간, 눈 깜빡임 횟수 분석
         pupil_frames, pupil_blinks, norm = count_blink(pupil_list, minu=minute, quar=quarter, norm=False)  # 엑셀파일 한사람씩 불러오기
 
-        # 2) 동공크기 변화율 분석
-        filter, zero_cross, section_frames, change_rates_list = fft(pupil_list, minu=minute, quar=quarter)
-
-        # 3) 눈 감은시간, 눈 깜빡임 횟수 분석 결과 사람별 엑셀파일로 저장
+        # 엑셀파일로 저장
         BD_df = pd.DataFrame(pupil_frames)
         BF_df = pd.DataFrame(pupil_blinks)
 
@@ -84,7 +81,11 @@ def main(path, norm, save_pre = False):
             createFolder('./BF/')
             BD_df.to_csv('./BD/' + name + '.csv', index=True, encoding='cp949')
             BF_df.to_csv('./BF/' + name + '.csv', index=True, encoding='cp949')
-        print('count blink done' + name)
+        print('count blink done: ' + name)
+
+        # 3) 동공크기 변화율 분석
+        filter, zero_cross, section_frames, change_rates_list = fft(pupil_list, minu=minute, quar=quarter)
+
 
         # 4) 그래프로 시각화 및 저장
         # 눈 감은 시간, 눈깜빡임 횟수 막대 그래프 그리기

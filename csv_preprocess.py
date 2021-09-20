@@ -2,12 +2,21 @@ import os
 import csv
 import numpy as np
 import pandas as pd
-from analysis_utils import createFolder
 
 
 """
 csv 보간하고 새로운 csv 만드는 코드
 """
+
+# 폴더 생성
+def createFolder(directory):
+    try:
+        if not os.path.exists(directory):
+            os.makedirs(directory)
+    except OSError as e:
+        if e.errno != errno.EEXIST:
+            print("Failed to create directory!!!!!", directory)
+            raise
 
 
 # 앞/뒤 프레임 사이에 0프레임이 하나일때 앞/뒤 프레임의 평균으로 대체

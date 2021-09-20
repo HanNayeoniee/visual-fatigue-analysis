@@ -6,15 +6,6 @@ import matplotlib.pyplot as plt
 from scipy import fftpack, signal
 from scipy.optimize import curve_fit
 
-# 폴더 생성
-def createFolder(directory):
-    try:
-        if not os.path.exists(directory):
-            os.makedirs(directory)
-    except OSError as e:
-        if e.errno != errno.EEXIST:
-            print("Failed to create directory!!!!!", directory)
-            raise
 
 
 def count_blink(pupil_list, minu = None, quar = None, norm = False):
