@@ -44,8 +44,8 @@ def getPupil(img, thresh):
     return res, thresh_gray
 
 
-cap = cv2.VideoCapture('./eye_video/2020.12.08/김규하/김규하2.avi')
-
+# main
+cap = cv2.VideoCapture('./video/sample1.avi')
 
 
 while True:
