@@ -66,6 +66,18 @@ def fill_reflected_light(ori_img, min_thr, iteration=2, add_inter_idx=1):
 
 # 동공 검출 함수
 def getPupil(img, thresh, area_val, symmetry_val, fill_cond_val):
+    '''
+    :param img: 입력 동공 이미지
+    :param thresh:
+    :param area_val:
+    :param symmetry_val:
+    :param fill_cond_val:
+    :return:
+    condition으로 끝나는 변수 3개가 모두 1로 만족해야 res에 append할 수 있음
+    area_condition : 직사각형 contour로 둘러싸인 부분의 면적
+    symmetry_condition : 1-종횡비율(contour를 둘러싼 직사각형의 너비/높이 비율)이 symmetry_val(0.2)보다 작으면 1-> 정사각형에 가까워야함
+    fill_condition : (contour로 둘러싸인 면적인 area/위에서 계산한 내접원의 넓이)을 계산해 얼마나 채워져있는지 비교
+    '''
     res = []
 
     if len(img.shape) == 3:
@@ -74,17 +86,27 @@ def getPupil(img, thresh, area_val, symmetry_val, fill_cond_val):
         gray = img
     ret, thresh_gray = cv2.threshold(gray, thresh[0], thresh[1], cv2.THRESH_BINARY)
     contours, hierarchy = cv2.findContours(thresh_gray, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
-    for contour in contours:
-        area = cv2.contourArea(contour)
-        rect = cv2.boundingRect(contour)
-        x, y, width, height = rect
-        radius = 0.25 * (width + height)
+
+    draw_img = img.copy()
+    for i in range(len(contours)):
+        # # 컨투어 각각 시각화
+        # cv2.drawContours(draw_img, [contours[i]], 0, (0, 0, 255), 2)
+        # cv2.putText(draw_img, str(i), tuple(contours[i][0][0]), cv2.FONT_HERSHEY_COMPLEX, 0.5, (0, 255, 0), 1)
+        # print(i, hierarchy[0][i])
+        # cv2.imshow('contour detection', draw_img)
+        # cv2.waitKey(0)
+
+    # for contour in contours:
+        area = cv2.contourArea(contours[i])
+        rect = cv2.boundingRect(contours[i])
+        x, y, width, height = rect  # 직사각형 모양 바운딩 박스의 좌표, 너비, 높이
+        radius = 0.25 * (width + height)  # 내접원의 반지름(내 생각엔 직사각형 모양의 contour의 내접원의 반지름같음)
 
         area_condition = (area_val <= area)
         symmetry_condition = (abs(1 - float(width) / float(height)) <= symmetry_val/10)
         fill_condition = (abs(1 - (area / (math.pi * math.pow(radius, 2.0)))) <= fill_cond_val/10)
 
-        # 3가지 조건 중 하나라도 만족하지 않으면 동공이 아닌 contour가 나옴
+        # 3가지 조건을 모두 만족해야 동공 영역
         if area_condition and symmetry_condition and fill_condition:
             res.append(((int(x + radius), int(y + radius)), int(1 * radius), rect))  # 동공중심 x좌표, y좌표, 반지름, rect(외접 사각형)
 
