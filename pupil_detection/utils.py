@@ -72,7 +72,7 @@ def getPupil(img, thresh, area_val, symmetry_val, fill_cond_val):
     :param area_val:
     :param symmetry_val:
     :param fill_cond_val:
-    :return:
+    :return: ((동공중심 x,y), 반지름, (외접 사각형 x,y,w,h))
     condition으로 끝나는 변수 3개가 모두 1로 만족해야 res에 append할 수 있음
     area_condition : 직사각형 contour로 둘러싸인 부분의 면적
     symmetry_condition : 1-종횡비율(contour를 둘러싼 직사각형의 너비/높이 비율)이 symmetry_val(0.2)보다 작으면 1-> 정사각형에 가까워야함
@@ -114,8 +114,11 @@ def getPupil(img, thresh, area_val, symmetry_val, fill_cond_val):
 
 # 동공 지름 구하기
 def get_pupil_size(roi, binary_eye, pupil_info, add_radius):
-    info = pupil_info[0]  # 동공중심 (x좌표, y좌표), 반지름, rect(외접 사각형)
-    rect_roi = info[2]
+    info = pupil_info[0]  # (동공중심x,y), 반지름, (외접 사각형 x,y,w,h)
+    # rect_roi = info[2]
+    rect_roi = pupil_info[0][2]
+
+
     box_x, box_y, width, height = rect_roi
     box_x = box_x - add_radius if box_x - add_radius >= 0 else 0
     box_y = box_y - add_radius if box_y - add_radius >= 0 else 0
@@ -126,6 +129,7 @@ def get_pupil_size(roi, binary_eye, pupil_info, add_radius):
 
     cv2.rectangle(roi, (box_x, box_y), ((box_x + width), (box_y + height)), (0, 255, 255), 2)  # 동공주변 노란색 박스
 
+    # 동공 영역 새로 길이
     max_idx, max_val = 0, 0
     for col_idx in range(img_eye_only.shape[0]):
         col_val = sum(img_eye_only[col_idx])
@@ -133,6 +137,7 @@ def get_pupil_size(roi, binary_eye, pupil_info, add_radius):
             max_idx = col_idx
             max_val = col_val
 
+    # 동공 영역이 시작되는 좌우 지점 찾기
     l_row, r_row = 0, img_eye_only.shape[1]
     for row_idx in range(img_eye_only.shape[1] - 1):
         row_val = sum(img_eye_only[:, row_idx])
@@ -143,6 +148,7 @@ def get_pupil_size(roi, binary_eye, pupil_info, add_radius):
         if row_val != 0:
             r_row = row_idx
 
+    # 동공의 세로 길이를 찾아 가로로 그림 
     cv2.line(roi,
              (box_x + l_row, box_y + max_idx),
              (box_x + r_row, box_y + max_idx),

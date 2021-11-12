@@ -1,5 +1,6 @@
 import cv2
 import math
+import numpy as np
 
 
 def getPupil(img, thresh, area_val, symmetry_val, fill_cond_val):
@@ -44,8 +45,8 @@ def getPupil(img, thresh, area_val, symmetry_val, fill_cond_val):
         # 3가지 조건 중 하나라도 만족하지 않으면 동공이 아닌 contour가 나옴
         if area_condition and symmetry_condition and fill_condition:
             res.append(((int(x + radius), int(y + radius)), int(1 * radius), rect))  # 동공중심 x좌표, y좌표, 반지름, rect(외접 사각형)
+            # res.append(((int(x + radius), int(y + radius)), int(1 * radius), rect))
             cv2.drawContours(gray, contours[i], -1, (0, 0, 255), 5)  # 조건에 맞는 동공 영역만 그리기
-
 
     # cv2.drawContours(gray, contours, -1, (0,0,255), 5)  # 전체 컨투어 그리기
     cv2.imshow('contour', gray)
@@ -57,17 +58,64 @@ def getPupil(img, thresh, area_val, symmetry_val, fill_cond_val):
     return res, thresh_gray
 
 
+# 동공 지름 구하기
+def get_pupil_size(roi, binary_eye, pupil_info, add_radius):
+    info = pupil_info[0]  # (동공중심x,y), 반지름, (외접 사각형 x,y,w,h)
+    # rect_roi = info[2]
+    rect_roi = pupil_info[0][2]
+    # print("pupil info[0]: ", info)
+    # print("pupil info[1]: ", pupil_info[1])
+    # print("pupil info[2]: ", rect_roi)
+
+    box_x, box_y, width, height = rect_roi
+    box_x = box_x - add_radius if box_x - add_radius >= 0 else 0
+    box_y = box_y - add_radius if box_y - add_radius >= 0 else 0
+    width = width + (2 * add_radius) if width + (2 * add_radius) <= roi.shape[1] else roi.shape[1]
+    height = height + (2 * add_radius) if height + (2 * add_radius) <= roi.shape[0] else roi.shape[0]
+    img_eye_only = binary_eye[box_y:box_y + height, box_x:box_x + width].copy()
+    img_eye_only = np.where(img_eye_only == 255, 1, img_eye_only)
+
+    cv2.rectangle(roi, (box_x, box_y), ((box_x + width), (box_y + height)), (0, 255, 255), 2)  # 동공주변 노란색 박스
+
+    max_idx, max_val = 0, 0
+    for col_idx in range(img_eye_only.shape[0]):
+        col_val = sum(img_eye_only[col_idx])
+        if max_val < col_val:
+            max_idx = col_idx
+            max_val = col_val
+
+    l_row, r_row = 0, img_eye_only.shape[1]
+    for row_idx in range(img_eye_only.shape[1] - 1):
+        row_val = sum(img_eye_only[:, row_idx])
+        if row_val != 0:
+            l_row = row_idx
+    for row_idx in range(img_eye_only.shape[1] - 1, 0, -1):
+        row_val = sum(img_eye_only[:, row_idx])
+        if row_val != 0:
+            r_row = row_idx
+
+    cv2.line(roi,
+             (box_x + l_row, box_y + max_idx),
+             (box_x + r_row, box_y + max_idx),
+             (0, 0, 255), 2)  # 동공의 지름 그리기
+
+    return roi, max_val
+
+
 
 if __name__ == "__main__":
-    cap = cv2.VideoCapture('./video/sample1.avi')
+    # cap = cv2.VideoCapture('./video/sample1.avi')
+    cap = cv2.VideoCapture('./video/jeontae.avi')
 
     while True:
         ret, frame = cap.read()
 
         if ret:
-            res, thresh_gray = getPupil(frame, thresh = [180, 255], area_val=70, symmetry_val=2, fill_cond_val=3)
+            pupil_info, binary_eye = getPupil(frame, thresh = [180, 255], area_val=70, symmetry_val=2, fill_cond_val=3)
+            res, max_val = get_pupil_size(frame, binary_eye, pupil_info, 10)
 
-            cv2.imshow('binarization', thresh_gray)
+            cv2.imshow('binarization', binary_eye)
+            cv2.imshow('res', res)
             if cv2.waitKey(10) & 0xFF == ord('q'):
                 break
         else:

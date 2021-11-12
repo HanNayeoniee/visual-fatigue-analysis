@@ -205,6 +205,7 @@ class MyApp(QMainWindow, main_ui):
                         self.plot_ys_diameter[idx_of_frame] = 0
                         # self.plot_ys_radius[idx_of_frame] = 0
 
+                    # 그래프 그리기
                     if self.checkBox_showGraph.isChecked():
                         # sequence graph
                         # idx_of_frame`
