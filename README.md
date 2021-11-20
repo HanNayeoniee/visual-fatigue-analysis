@@ -78,8 +78,6 @@ pip install -r requirements.txt
 4. main.py :
 전처리 -> 눈 깜빡임 빈도, 눈 감은 시간 계산 -> 동공크기 변화율 계산 ->엑셀 파일, 결과 그래프 저장
 
-## Usage
-[demo.ipynb]()
 
 
 ## Authors
