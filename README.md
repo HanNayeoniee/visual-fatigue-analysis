@@ -27,15 +27,26 @@ pip install -r requirements.txt
 
 
 ## Files
-**pupil_detection**
+
+### pupil_detection
 1. get_pupil_size.py : 사용자 설정 변수에 따라 동공 크기 검출
 
 2. get_pupil_size.ui : pyqt ui파일
 
-3. utils.py : 
+3. utils.py : 반사광 제거, 동공 영역 검출, 동공 지름 계산 등 주요 함수들
+
+```fill_reflected_light()``` : 반사광 제거
+
+```getPupil()``` : 동공 영역 검출
+
+```get_pupil_size()``` : 동공 지름 계산
+
+```frames_to_timecode()``` : frame -> time 변환
+
+```cvtPixmap()``` : 이미지 읽어서 pyqt로 보여줌
 
 
-**analysis**
+### analysis
 1. csv_preprocess.py : csv파일 보간
 
 ```interpolation_zero()``` : 앞/뒤 프레임 사이에 동공크기가 0인 프레임이 하나일때 앞/뒤 프레임의 평균으로 대체
